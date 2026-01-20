@@ -1,7 +1,8 @@
 export HOST=tt
 export POOL="filesystems"
 export IMAGE="rocky9.qcow2"
-export MEMORY="2048"
+export OS="rocky9"
+export MEMORY="8192"
 
 export ROOT_DEVICE="/dev/sda5"
 export ROOT_SIZE="10G"

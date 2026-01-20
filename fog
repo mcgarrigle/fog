@@ -1,7 +1,5 @@
 #!/bin/bash
 
-PRIMARY="${HOST}.qcow2"
-
 function upload {
   virsh vol-create-as --pool ${POOL} --name $2 --capacity 1g
   virsh vol-upload --pool ${POOL} --vol $2 --file $1
@@ -22,7 +20,7 @@ function make_vm {
   virt-install \
     --import \
     --virt-type kvm \
-    --osinfo rocky9 \
+    --osinfo "${OS}" \
     --name "${HOST}" \
     --memory "${MEMORY}" \
     --vcpus 1 \
@@ -33,12 +31,15 @@ function make_vm {
     --noautoconsole
 }
 
-truncate --size=${ROOT_SIZE} "${HOST}.qcow2"
-virt-resize --expand "${ROOT_DEVICE}" "${IMAGE}" "${HOST}.qcow2"
+PRIMARY="${HOST}.qcow2"
 
-upload "${HOST}.qcow2" "${HOST}.qcow2"
+truncate --size=${ROOT_SIZE} "${PRIMARY}"
+virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGE}" "${PRIMARY}"
+
+upload "${PRIMARY}" "${PRIMARY}"
 
 make_cloud_init
 make_vm
+rm "${PRIMARY}"
 
 # rm -rf "${TEMP}"
