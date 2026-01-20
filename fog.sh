@@ -42,9 +42,7 @@ function make_vm {
     --noautoconsole
 }
 
-# make_cloud_init
 upload "${image}" "${name}.qcow2"
-# upload "${metadata}" "${name}.iso"
 make_vm
 
 # virt-install \

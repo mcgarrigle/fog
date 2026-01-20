@@ -1,0 +1,44 @@
+#!/bin/bash
+
+. $1  # include vm definition
+
+PRIMARY="${HOST}.qcow2"
+
+function upload {
+  virsh vol-create-as --pool ${POOL} --name $2 --capacity 1g
+  virsh vol-upload --pool ${POOL} --vol $2 --file $1
+  virsh vol-list --pool ${POOL}
+}
+
+function make_cloud_init {
+  TEMP=$(mktemp --directory)
+  CI_USER="${TEMP}/user-data"
+  CI_META="${TEMP}/meta-data"
+  CI_NETWORK="${TEMP}/network-config"
+  envsubst < cloud-init/user-data      > "${CI_USER}"
+  envsubst < cloud-init/meta-data      > "${CI_META}"
+  envsubst < cloud-init/network-config > "${CI_NETWORK}"
+}
+
+function make_vm {
+  virt-install \
+    --import \
+    --virt-type kvm \
+    --osinfo rocky9 \
+    --name "${HOST}" \
+    --memory "${MEMORY}" \
+    --vcpus 1 \
+    --disk=vol=${POOL}/${PRIMARY},device=disk \
+    --cloud-init=user-data=${CI_USER},meta-data=${CI_META},network-config=${CI_NETWORK} \
+    --network default \
+    --graphics none \
+    --noautoconsole
+}
+
+truncate --size=${ROOT_SIZE} "${HOST}.qcow2"
+virt-resize --expand "${ROOT_DEVICE}" "${IMAGE}" "${HOST}.qcow2"
+
+upload "${HOST}.qcow2" "${HOST}.qcow2"
+
+make_cloud_init
+make_vm
