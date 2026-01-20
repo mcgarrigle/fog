@@ -15,9 +15,9 @@ function make_cloud_init {
   CI_USER="${TEMP}/user-data"
   CI_META="${TEMP}/meta-data"
   CI_NETWORK="${TEMP}/network-config"
-  envsubst < cloud-init/user-data      > "${CI_USER}"
-  envsubst < cloud-init/meta-data      > "${CI_META}"
-  envsubst < cloud-init/network-config > "${CI_NETWORK}"
+  envsubst < cloud-init/user-data             > "${CI_USER}"
+  envsubst < cloud-init/meta-data             > "${CI_META}"
+  envsubst < cloud-init/network-config-static > "${CI_NETWORK}"
 }
 
 function make_vm {
@@ -42,3 +42,5 @@ upload "${HOST}.qcow2" "${HOST}.qcow2"
 
 make_cloud_init
 make_vm
+
+# rm -rf "${TEMP}"
