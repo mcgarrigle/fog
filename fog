@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. $1  # include vm definition
-
 PRIMARY="${HOST}.qcow2"
 
 function upload {
