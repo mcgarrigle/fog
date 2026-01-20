@@ -6,10 +6,16 @@ image="$1"
 name="$2"
 base="$(mktemp -d)"
 
-machine="${name}.qcow2"
+primary="${name}.qcow2"
 metadata="${base}/${name}.iso"
 
-# cp "${image}" "${machine}"
+# cp "${image}" "${primary}"
+
+function upload {
+  virsh vol-create-as --pool ${POOL} --name $2 --capacity 1g
+  virsh vol-upload --pool ${POOL} --vol $2 --file $1
+  virsh vol-list --pool ${POOL}
+}
 
 function make_cloud_init {
   genisoimage -output ${metadata} \
@@ -25,27 +31,20 @@ function make_vm {
   virt-install \
     --import \
     --virt-type kvm \
+    --osinfo rocky9 \
     --name "${name}" \
     --memory 1024 \
     --vcpus 1 \
-    --disk ${machine},device=disk \
-    --disk ${metadata},device=cdrom \
-    --os-type Linux \
-    --os-variant centos7.0 \
+    --disk=vol=${POOL}/${primary},device=disk \
+    --cloud-init=user-data=cloud-init/user-data,meta-data=cloud-init/meta-data,network-config=cloud-init/network-config \
     --network default \
-    --graphics none 
-    # --noautoconsole
+    --graphics none \
+    --noautoconsole
 }
 
-function upload {
-  virsh vol-create-as --pool ${POOL} --name $2 --capacity 1g
-  virsh vol-upload --pool ${POOL} --vol $2 --file $1
-  virsh vol-list --pool ${POOL}
-}
-
-make_cloud_init
+# make_cloud_init
 upload "${image}" "${name}.qcow2"
-upload "${metadata}" "${name}.iso"
+# upload "${metadata}" "${name}.iso"
 make_vm
 
 # virt-install \
@@ -66,4 +65,4 @@ make_vm
 #   --container           This guest should be a container guest
 #   --virt-type HV_TYPE   Hypervisor name to use (kvm, qemu, xen, ...)
 #   --arch ARCH           The CPU architecture to simulate
-#   --machine MACHINE     The machine type to emulate
+#   --primary MACHINE     The machine type to emulate

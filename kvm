@@ -11,9 +11,9 @@ function command_vols {
 }
 
 function command_rm {
+  virsh destroy $1
   virsh undefine $1
   virsh vol-delete --pool ${POOL} --vol "$1.qcow2"
-  virsh vol-delete --pool ${POOL} --vol "$1.iso"
   virsh list --all
   command_vols
 }

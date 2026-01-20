@@ -1,11 +1,11 @@
 version: 1
 config:
 - type: physical
-  name: eth0
+  name: ${NETWORK_DEVICE}
   subnets:
   - type: static
-    address: ${ip_address}
-    gateway: ${gateway_address}
+    address: ${IP_ADDRESS}
+    gateway: ${GATEWAY_ADDRESS}
 - type: nameserver
   address:
-  - ${dns_server}
+  - ${DNS_SERVER}
