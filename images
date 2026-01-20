@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "${HYPERVISORS[@]}"
+exit
+
+function upload {
+  export LIBVIRT_DEFAULT_URI="$1"
+  virsh vol-create-as --pool filesystems --name $2 --capacity 1g
+  virsh vol-upload --vol $2 --pool filesystems --file $3
+  virsh vol-list --pool filesystems
+}
+
+smol="qemu+ssh://pete@smol.mac.wales/system?keyfile=/home/pete/.ssh/id_rsa&sshauth=privkey&no_verify=1"
+wee="qemu+ssh://pete@wee.mac.wales/system?keyfile=/home/pete/.ssh/id_rsa&sshauth=privkey&no_verify=1"
+
+upload "$smol" rocky-base-9.3.qcow2 Rocky-9-GenericCloud-Base-9.3-20231113.0.x86_64.qcow2
+upload "$wee"  rocky-base-9.3.qcow2 Rocky-9-GenericCloud-Base-9.3-20231113.0.x86_64.qcow2
