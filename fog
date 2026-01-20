@@ -23,10 +23,10 @@ function make_vm {
     --osinfo "${OS}" \
     --name "${HOST}" \
     --memory "${MEMORY}" \
-    --vcpus 1 \
+    --vcpus "${CPUS}" \
     --disk=vol=${POOL}/${PRIMARY},device=disk \
     --cloud-init=user-data=${CI_USER},meta-data=${CI_META},network-config=${CI_NETWORK} \
-    --network default \
+    --network "${NETWORK}" \
     --graphics none \
     --noautoconsole
 }

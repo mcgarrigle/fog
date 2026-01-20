@@ -2,11 +2,13 @@ export HOST=tt
 export POOL="filesystems"
 export IMAGE="rocky9.qcow2"
 export OS="rocky9"
+export CPUS="2"
 export MEMORY="2048"
 
 export ROOT_DEVICE="/dev/sda5"
 export ROOT_SIZE="10G"
 
+export NETWORK="default"
 export NETWORK_DEVICE="eth0"
 export IP_ADDRESS="192.168.1.24"
 export GATEWAY_ADDRESS="192.168.1.254"
