@@ -1,5 +1,8 @@
 #!/bin/bash
 
+THIS=$(realpath "$0")
+HERE=$(dirname "${THIS}") 
+
 function upload {
   virsh vol-create-as --pool "${POOL}" --name "$2" --capacity 1g
   virsh vol-upload --pool "${POOL}" --vol "$2" --file "$1"
@@ -7,9 +10,10 @@ function upload {
 }
 
 function make_primary_disk {
-  truncate --size=${ROOT_SIZE} "${PRIMARY}"
-  virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGE}" "${PRIMARY}"
-  upload "${PRIMARY}" "${PRIMARY}"
+  DISK="${IMAGES}/${PRIMARY}"
+  truncate --size=${ROOT_SIZE} "${DISK}"
+  virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGES}/${IMAGE}" "${DISK}"
+  upload "${DISK}" "${PRIMARY}"
 }
 
 function make_cloud_init {
@@ -17,9 +21,9 @@ function make_cloud_init {
   CI_USER="${TEMP}/user-data"
   CI_META="${TEMP}/meta-data"
   CI_NETWORK="${TEMP}/network-config"
-  envsubst < cloud-init/user-data             > "${CI_USER}"
-  envsubst < cloud-init/meta-data             > "${CI_META}"
-  envsubst < cloud-init/network-config-static > "${CI_NETWORK}"
+  envsubst < "${HERE}/cloud-init/user-data"             > "${CI_USER}"
+  envsubst < "${HERE}/cloud-init/meta-data"             > "${CI_META}"
+  envsubst < "${HERE}/cloud-init/network-config-static" > "${CI_NETWORK}"
 }
 
 function make_vm {
@@ -37,12 +41,13 @@ function make_vm {
     --noautoconsole
 }
 
+IMAGES="${HERE}/images"
 PRIMARY="${HOST}.qcow2"
 
 make_primary_disk
 make_cloud_init
 make_vm
 
-rm "${PRIMARY}"
+rm "${DISK}"
 
 # rm -rf "${TEMP}"
