@@ -10,13 +10,12 @@ function upload {
 }
 
 function make_primary_disk {
-  DISK="${IMAGES}/${PRIMARY}"
   truncate --size=${ROOT_SIZE} "${DISK}"
   virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGES}/${IMAGE}" "${DISK}"
   upload "${DISK}" "${PRIMARY}"
 }
 
-function make_cloud_init {
+function make_cloud_init_disk {
   TEMP=$(mktemp --directory)
   CI_USER="${TEMP}/user-data"
   CI_META="${TEMP}/meta-data"
@@ -41,11 +40,20 @@ function make_vm {
     --noautoconsole
 }
 
+function ruler {
+  printf '%.s─' $(seq 1 $(tput cols))
+}
+
 IMAGES="${HERE}/images"
 PRIMARY="${HOST}.qcow2"
+DISK="${IMAGES}/${PRIMARY}"
+
+ruler
+echo "Building ${HOST}"
+echo
 
 make_primary_disk
-make_cloud_init
+make_cloud_init_disk
 make_vm
 
 rm "${DISK}"
