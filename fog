@@ -1,9 +1,13 @@
 #!/bin/bash
 
 function upload {
-  virsh vol-create-as --pool ${POOL} --name $2 --capacity 1g
-  virsh vol-upload --pool ${POOL} --vol $2 --file $1
-  virsh vol-list --pool ${POOL}
+  virsh vol-create-as --pool "${POOL}" --name "$2" --capacity 1g
+  virsh vol-upload --pool "${POOL}" --vol "$2" --file "$1"
+  virsh vol-list --pool "${POOL}"
+}
+
+function vol_path {
+  virsh vol-path --pool "${POOL}" --vol "$1"
 }
 
 function make_cloud_init {
