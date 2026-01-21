@@ -6,8 +6,10 @@ function upload {
   virsh vol-list --pool "${POOL}"
 }
 
-function vol_path {
-  virsh vol-path --pool "${POOL}" --vol "$1"
+function make_primary_disk {
+  truncate --size=${ROOT_SIZE} "${PRIMARY}"
+  virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGE}" "${PRIMARY}"
+  upload "${PRIMARY}" "${PRIMARY}"
 }
 
 function make_cloud_init {
@@ -37,13 +39,10 @@ function make_vm {
 
 PRIMARY="${HOST}.qcow2"
 
-truncate --size=${ROOT_SIZE} "${PRIMARY}"
-virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGE}" "${PRIMARY}"
-
-upload "${PRIMARY}" "${PRIMARY}"
-
+make_primary_disk
 make_cloud_init
 make_vm
+
 rm "${PRIMARY}"
 
 # rm -rf "${TEMP}"
