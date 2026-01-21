@@ -40,7 +40,7 @@ function make_vm {
     --graphics "none" \
     --noautoconsole
 
-  # virsh console "${HOST}"
+  [ "${CONSOLE}" = "1" ] && virsh console "${HOST}"
 }
 
 function ruler {
