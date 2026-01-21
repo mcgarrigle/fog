@@ -29,7 +29,7 @@ function make_vm {
   virt-install \
     --import \
     --virt-type "kvm" \
-    --boot uefi \
+    --boot "${BOOT}" \
     --osinfo "${OS}" \
     --name "${HOST}" \
     --memory "${MEMORY}" \
@@ -50,6 +50,7 @@ function ruler {
 IMAGES="${HERE}/images"
 PRIMARY="${HOST}.qcow2"
 DISK="${IMAGES}/${PRIMARY}"
+BOOT="${BOOT:-uefi}"
 
 ruler
 echo "Building ${HOST}"
