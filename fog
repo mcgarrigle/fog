@@ -28,7 +28,8 @@ function make_cloud_init_disk {
 function make_vm {
   virt-install \
     --import \
-    --virt-type kvm \
+    --virt-type "kvm" \
+    --boot uefi \
     --osinfo "${OS}" \
     --name "${HOST}" \
     --memory "${MEMORY}" \
@@ -36,8 +37,10 @@ function make_vm {
     --disk "vol=${POOL}/${PRIMARY},device=disk" \
     --cloud-init "user-data=${CI_USER},meta-data=${CI_META},network-config=${CI_NETWORK}" \
     --network "${NETWORK}" \
-    --graphics none \
+    --graphics "none" \
     --noautoconsole
+
+  # virsh console "${HOST}"
 }
 
 function ruler {
