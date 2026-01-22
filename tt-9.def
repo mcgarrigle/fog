@@ -1,4 +1,4 @@
-export HOST=tt
+export HOST="tt"
 export POOL="filesystems"
 export IMAGE="rocky9.qcow2"
 export OS="rocky9"

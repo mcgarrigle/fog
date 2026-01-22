@@ -4,15 +4,17 @@ THIS=$(realpath "$0")
 HERE=$(dirname "${THIS}") 
 
 function upload {
-  virsh vol-create-as --pool "${POOL}" --name "$2" --capacity 1g
+  virsh vol-create-as --pool "${POOL}" --name "$2" --capacity 1m
   virsh vol-upload --pool "${POOL}" --vol "$2" --file "$1"
   virsh vol-list --pool "${POOL}"
 }
 
 function make_primary_disk {
+  DISK="${IMAGES}/${PRIMARY}"
   truncate --size=${ROOT_SIZE} "${DISK}"
   virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGES}/${IMAGE}" "${DISK}"
   upload "${DISK}" "${PRIMARY}"
+  rm "${DISK}"
 }
 
 function make_cloud_init_disk {
@@ -49,7 +51,6 @@ function ruler {
 
 IMAGES="${HERE}/images"
 PRIMARY="${HOST}.qcow2"
-DISK="${IMAGES}/${PRIMARY}"
 BOOT="${BOOT:-uefi}"
 
 ruler
@@ -59,7 +60,5 @@ echo
 make_primary_disk
 make_cloud_init_disk
 make_vm
-
-rm "${DISK}"
 
 # rm -rf "${TEMP}"
