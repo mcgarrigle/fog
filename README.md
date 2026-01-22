@@ -26,16 +26,17 @@ export DNS_SERVER="1.1.1.1"
 
 export SSH_PUBLIC_KEY="$(cat ${HOME}/.ssh/id_rsa.pub)"
 ```
-Variables
+Guest Definition Variables
 
 | Variable        | Purpose   |
 | --------------- | --------- |
-| HOST            |           |
+| HOST            | Guest hostname          |
 | POOL            |           |
 | IMAGE           |           |
 | OS              |           |
 | CPUS            |           |
 | MEMORY          |           |
+| BOOT            |           |
 |                 |           |
 | ROOT_DEVICE     |           |
 | ROOT_SIZE       |           |
@@ -47,3 +48,9 @@ Variables
 | DNS_SERVER      |           |
 |                 |           |
 | SSH_PUBLIC_KEY  |           |
+
+Operational Variables
+
+| Variable        | Purpose   |
+| --------------- | --------- |
+| CONSOLE         | If 1 will start a console |
