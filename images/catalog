@@ -1,3 +1,8 @@
+Rocky
+
 curl -O https://dl.rockylinux.org/vault/rocky/10.0/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2
 curl -O https://dl.rockylinux.org/vault/rocky/10.0/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2.CHECKSUM
 
+Ubuntu
+
+curl -O https://cloud-images.ubuntu.com/questing/20251125/questing-server-cloudimg-amd64.img

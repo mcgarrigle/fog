@@ -47,9 +47,8 @@ Guest Definition Variables
 | GATEWAY_ADDRESS | Default route |
 | DNS_SERVER      | DNS server |
 | -               |           |
-| SSH_PUBLIC_KEY  | SSH public key to inject into ${USER} |
-| -               |           |
 | USER            | Username to inject into VM |
+| SSH_PUBLIC_KEY  | SSH public key to inject into ${USER} |
 
 Operational Variables
 
