@@ -30,24 +30,26 @@ Guest Definition Variables
 
 | Variable        | Purpose   |
 | --------------- | --------- |
-| HOST            | Guest hostname          |
-| POOL            |           |
-| IMAGE           |           |
-| OS              |           |
-| CPUS            |           |
-| MEMORY          |           |
-| BOOT            |           |
+| HOST            | Guest hostname |
+| POOL            | libvirt pool to store VM disk |
+| IMAGE           | image file stored in {FOG-HOME}/images |
+| OS              | osinfo (use 'osinfo-query os' to find a value to use) |
+| CPUS            | Number of vcpu to allocate |
+| MEMORY          | Memory allocated (in MiB) |
+| BOOT            | Boot order (defaults to 'uefi') |
 |                 |           |
-| ROOT_DEVICE     |           |
-| ROOT_SIZE       |           |
+| ROOT_DEVICE     | / device to expand (use virt-df to find root FS) |
+| ROOT_SIZE       | New size of image, the root FS will be expanded |
 |                 |           |
-| NETWORK         |           |
-| NETWORK_DEVICE  |           |
-| IP_ADDRESS      |           |
-| GATEWAY_ADDRESS |           |
-| DNS_SERVER      |           |
+| NETWORK         | libvirt network to attach to |
+| NETWORK_DEVICE  | eth0 or enp0s1 or other |
+| IP_ADDRESS      | Static IP address |
+| GATEWAY_ADDRESS | Default route |
+| DNS_SERVER      | DNS server |
 |                 |           |
-| SSH_PUBLIC_KEY  |           |
+| SSH_PUBLIC_KEY  | SSH public key to inject into ${USER} |
+|                 |           |
+| USER            | Username to inject into VM |
 
 Operational Variables
 
