@@ -7,6 +7,6 @@ users:
       expire: False
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    passwd: XXXXX
+    passwd: ${PASSWORD:-XXXXXXXX}
     ssh_authorized_keys:
     - ${SSH_PUBLIC_KEY}
