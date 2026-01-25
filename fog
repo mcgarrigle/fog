@@ -10,8 +10,9 @@ function upload {
 }
 
 function make_primary_disk {
+  SOURCE="${IMAGES}/${IMAGE}"
   DISK="${IMAGES}/${PRIMARY}"
-  truncate --size=${ROOT_SIZE} "${DISK}"
+  truncate --reference "${SOURCE}" --size +${ROOT_SIZE} "${DISK}"
   virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGES}/${IMAGE}" "${DISK}"
   upload "${DISK}" "${PRIMARY}"
   rm "${DISK}"

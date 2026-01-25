@@ -39,7 +39,7 @@ Guest Definition Variables
 | BOOT            | Boot order (defaults to 'uefi') |
 | -               |           |
 | ROOT_DEVICE     | / device to expand (use virt-df to find root FS) |
-| ROOT_SIZE       | New size of image, the root FS will be expanded |
+| ROOT_SIZE       | Size to extend image by, the root FS will be expanded |
 | -               |           |
 | NETWORK         | libvirt network to attach to |
 | NETWORK_DEVICE  | eth0 or enp0s1 or other |
