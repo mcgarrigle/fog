@@ -8,7 +8,7 @@ export MEMORY="2048"
 export ROOT_DEVICE="/dev/sda5"
 export ROOT_SIZE="10G"
 
-export NETWORK="default"
+export NETWORK="network=bridge"
 export NETWORK_DEVICE="eth0"
 export IP_ADDRESS="192.168.1.24"
 export GATEWAY_ADDRESS="192.168.1.254"

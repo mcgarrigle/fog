@@ -49,16 +49,57 @@ function ruler {
   printf '%.s─' $(seq 1 $(tput cols))
 }
 
+function command_up {
+	ruler
+	echo "Building ${HOST}"
+	echo
+
+	make_primary_disk
+	make_cloud_init_disk
+	make_vm
+}
+
+function command_down {
+  virsh destroy "${HOST}"
+}
+
+function command_ls {
+  virsh list --all
+}
+
+function command_vols {
+  virsh vol-list --pool "${POOL}"
+}
+
+function command_info {
+  virsh dominfo --domain "$1"
+  virsh domblklist --domain "$1"
+}
+
+function command_rm {
+  virsh destroy "${HOST}"
+  virsh undefine --nvram "${HOST}"
+  virsh vol-delete --pool "${POOL}" --vol "${PRIMARY}"
+}
+
+function command_help {
+  echo "fog - manage kvm VMs"
+  echo
+  echo "fog up            - build domain"
+  echo "fog down          - stop domain"
+  echo "fog ls            - list domains"
+  echo "fog info <name>   - get domain info"
+  echo "fog vols          - list volumes in pool \$POOL"
+  echo "fog rm <name>     - delete domain and volume"
+}
+
 IMAGES="${HERE}/images"
+POOL="${POOL:-filesystems}"
 PRIMARY="${HOST}.qcow2"
 BOOT="${BOOT:-uefi}"
 
-ruler
-echo "Building ${HOST}"
-echo
-
-make_primary_disk
-make_cloud_init_disk
-make_vm
+COMMAND="${1:-help}"
+shift
+command_${COMMAND} $@
 
 # rm -rf "${TEMP}"

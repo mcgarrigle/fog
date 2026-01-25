@@ -3,10 +3,8 @@
 users:
   - name: ${USER}
     groups: users
-    chpasswd:
-      expire: False
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    passwd: ${PASSWORD:-XXXXXXXX}
+    plain_text_password: ${PASSWORD:-letmein}
     ssh_authorized_keys:
     - ${SSH_PUBLIC_KEY}
