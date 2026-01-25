@@ -49,6 +49,10 @@ function ruler {
   printf '%.s─' $(seq 1 $(tput cols))
 }
 
+# -------------------------------------------------------------------
+# commands
+#
+
 function command_up {
 	ruler
 	echo "Building ${HOST}"
@@ -90,13 +94,15 @@ function command_help {
   echo "fog ls            - list domains"
   echo "fog info <name>   - get domain info"
   echo "fog vols          - list volumes in pool \$POOL"
-  echo "fog rm <name>     - delete domain and volume"
+  echo "fog rm            - delete domain and volume"
 }
 
 IMAGES="${HERE}/images"
-POOL="${POOL:-filesystems}"
 PRIMARY="${HOST}.qcow2"
-BOOT="${BOOT:-uefi}"
+
+export POOL="${POOL:-filesystems}"
+export BOOT="${BOOT:-uefi}"
+export PASSWORD="${PASSWORD:-letmein123}"
 
 COMMAND="${1:-help}"
 shift
