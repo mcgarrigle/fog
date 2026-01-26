@@ -36,13 +36,14 @@ Guest Definition Variables
 | OS              | osinfo (use 'osinfo-query os' to find a value to use) |
 | CPUS            | Number of vcpu to allocate |
 | MEMORY          | Memory allocated (in MiB) |
-| BOOT            | Boot order (defaults to 'uefi') |
+| BOOT            | Boot order (default uefi') |
 | -               |           |
 | ROOT_DEVICE     | / device to expand (use virt-df to find root FS) |
 | ROOT_SIZE       | Size to extend image by, the root FS will be expanded |
 | -               |           |
 | NETWORK         | libvirt network to attach to |
 | NETWORK_DEVICE  | eth0 or enp0s1 or other |
+| BOOTPROTO       | 'static' (default) or 'dhcp' |
 | IP_ADDRESS      | Static IP address |
 | GATEWAY_ADDRESS | Default route |
 | DNS_SERVER      | DNS server |

@@ -1,6 +1,6 @@
 version: 1
 config:
-- name: eth0
+- name: ${NETWORK_DEVICE}
   subnets:
   - type: dhcp
   type: physical

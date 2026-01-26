@@ -24,9 +24,10 @@ function make_cloud_init_disk {
   CI_USER="${TEMP}/user-data"
   CI_META="${TEMP}/meta-data"
   CI_NETWORK="${TEMP}/network-config"
-  envsubst < "${HERE}/cloud-init/user-data"             > "${CI_USER}"
-  envsubst < "${HERE}/cloud-init/meta-data"             > "${CI_META}"
-  envsubst < "${HERE}/cloud-init/network-config-static" > "${CI_NETWORK}"
+  CI="${HERE}/cloud-init"
+  envsubst < "${CI}/user-data"                   > "${CI_USER}"
+  envsubst < "${CI}/meta-data"                   > "${CI_META}"
+  envsubst < "${CI}/network-config-${BOOTPROTO}" > "${CI_NETWORK}"
   CLOUD_INIT="user-data=${CI_USER},meta-data=${CI_META},network-config=${CI_NETWORK}"
 }
 
@@ -106,6 +107,7 @@ PRIMARY="${HOST}.qcow2"
 export POOL="${POOL:-filesystems}"
 export BOOT="${BOOT:-uefi}"
 export PASSWORD="${PASSWORD:-letmein123}"
+export BOOTPROTO="${BOOTPROTO:-static}"
 
 COMMAND="${1:-help}"
 shift
