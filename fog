@@ -13,9 +13,10 @@ function make_primary_disk {
   SOURCE="${IMAGES}/${IMAGE}"
   DISK="${IMAGES}/${PRIMARY}"
   truncate --reference "${SOURCE}" --size +${ROOT_SIZE} "${DISK}"
-  virt-resize --quiet --expand "${ROOT_DEVICE}" "${IMAGES}/${IMAGE}" "${DISK}"
+  virt-resize --quiet --expand "${ROOT_DEVICE}" "${SOURCE}" "${DISK}"
   upload "${DISK}" "${PRIMARY}"
   rm "${DISK}"
+  DISK="vol=${POOL}/${PRIMARY},device=disk"
 }
 
 function make_cloud_init_disk {
@@ -26,6 +27,7 @@ function make_cloud_init_disk {
   envsubst < "${HERE}/cloud-init/user-data"             > "${CI_USER}"
   envsubst < "${HERE}/cloud-init/meta-data"             > "${CI_META}"
   envsubst < "${HERE}/cloud-init/network-config-static" > "${CI_NETWORK}"
+  CLOUD_INIT="user-data=${CI_USER},meta-data=${CI_META},network-config=${CI_NETWORK}"
 }
 
 function make_vm {
@@ -37,8 +39,8 @@ function make_vm {
     --name "${HOST}" \
     --memory "${MEMORY}" \
     --vcpus "${CPUS}" \
-    --disk "vol=${POOL}/${PRIMARY},device=disk" \
-    --cloud-init "user-data=${CI_USER},meta-data=${CI_META},network-config=${CI_NETWORK}" \
+    --disk "${DISK}" \
+    --cloud-init "${CLOUD_INIT}" \
     --network "${NETWORK}" \
     --graphics "none" \
     --noautoconsole
