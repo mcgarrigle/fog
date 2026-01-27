@@ -1,3 +1,5 @@
+# vim: set filetype=bash :
+
 export HOST="tt"
 export POOL="filesystems"
 export IMAGE="rocky10.qcow2"
