@@ -19,15 +19,16 @@ function make_primary_disk {
   DISK="vol=${POOL}/${PRIMARY},device=disk"
 }
 
+function template {
+  local CONFIG=$(mktemp)
+  envsubst < "${HERE}/cloud-init/$1" > "${CONFIG}"
+  echo "${CONFIG}"
+}
+
 function make_cloud_init_disk {
-  TEMP=$(mktemp --directory)
-  CI_USER="${TEMP}/user-data"
-  CI_META="${TEMP}/meta-data"
-  CI_NETWORK="${TEMP}/network-config"
-  CI="${HERE}/cloud-init"
-  envsubst < "${CI}/user-data"                   > "${CI_USER}"
-  envsubst < "${CI}/meta-data"                   > "${CI_META}"
-  envsubst < "${CI}/network-config-${BOOTPROTO}" > "${CI_NETWORK}"
+  CI_USER=$(template "user-data")
+  CI_META=$(template "meta-data")
+  CI_NETWORK=$(template "network-config-${BOOTPROTO}")
   CLOUD_INIT="user-data=${CI_USER},meta-data=${CI_META},network-config=${CI_NETWORK}"
 }
 
