@@ -59,17 +59,25 @@ function ruler {
 #
 
 function command_up {
-	ruler
-	echo "Building ${HOST}"
-	echo
+  ruler
+  echo "Building ${HOST}"
+  echo
 
-	make_primary_disk
-	make_cloud_init_disk
-	make_vm
+  IMAGES="${HERE}/images"
+  PRIMARY="${HOST}.qcow2"
+
+  POOL="${POOL:-filesystems}"
+  BOOT="${BOOT:-uefi}"
+  PASSWORD="${PASSWORD:-letmein123}"
+  BOOTPROTO="${BOOTPROTO:-static}"
+
+  make_primary_disk
+  make_cloud_init_disk
+  make_vm
 }
 
 function command_down {
-  virsh destroy "${HOST}"
+  virsh destroy "$1"
 }
 
 function command_ls {
@@ -93,26 +101,16 @@ function command_rm {
 }
 
 function command_help {
-  echo "fog - manage kvm VMs"
+  echo "fog - manage KVM VMs"
   echo
-  echo "fog up            - build domain"
-  echo "fog down          - stop domain"
   echo "fog ls            - list domains"
+  echo "fog up            - build domain"
+  echo "fog down <name>   - stop domain"
   echo "fog info <name>   - get domain info"
   echo "fog rm <name>     - delete domain and volume"
   echo "fog vols          - list volumes in pool \$POOL"
 }
 
-IMAGES="${HERE}/images"
-PRIMARY="${HOST}.qcow2"
-
-export POOL="${POOL:-filesystems}"
-export BOOT="${BOOT:-uefi}"
-export PASSWORD="${PASSWORD:-letmein123}"
-export BOOTPROTO="${BOOTPROTO:-static}"
-
 COMMAND="${1:-help}"
 shift
 command_${COMMAND} $@
-
-# rm -rf "${TEMP}"
