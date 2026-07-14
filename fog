@@ -85,6 +85,7 @@ function command_ls {
 }
 
 function command_vols {
+  POOL="${1:-filesystems}"
   virsh vol-list --pool "${POOL}"
 }
 
@@ -94,6 +95,7 @@ function command_info {
 }
 
 function command_rm {
+  POOL="${1:-filesystems}"
   PRIMARY="$1.qcow2"
   virsh destroy "$1"
   virsh undefine --nvram "$1"
@@ -108,7 +110,8 @@ function command_help {
   echo "fog down <name>   - stop domain"
   echo "fog info <name>   - get domain info"
   echo "fog rm <name>     - delete domain and volume"
-  echo "fog vols          - list volumes in pool \$POOL"
+  echo "fog vols <pool>   - list volumes in pool"
+  echo
 }
 
 COMMAND="${1:-help}"
