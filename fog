@@ -36,6 +36,7 @@ function make_vm {
   virt-install \
     --import \
     --virt-type "kvm" \
+    --machine "${MACHINE}" \
     --boot "${BOOT}" \
     --osinfo "${OS}" \
     --name "${HOST}" \
@@ -67,12 +68,16 @@ function command_up {
   PRIMARY="${HOST}.qcow2"
 
   POOL="${POOL:-filesystems}"
+  MACHINE="${MACHINE:-q35}"
   BOOT="${BOOT:-uefi}"
   PASSWORD="${PASSWORD:-letmein123}"
   BOOTPROTO="${BOOTPROTO:-static}"
 
+  echo "Making root disk"
   make_primary_disk
+  echo "Making Cloud-init disk"
   make_cloud_init_disk
+  echo "Starting VM"
   make_vm
 }
 
@@ -95,7 +100,7 @@ function command_info {
 }
 
 function command_rm {
-  POOL="${1:-filesystems}"
+  POOL="filesystems"
   PRIMARY="$1.qcow2"
   virsh destroy "$1"
   virsh undefine --nvram "$1"

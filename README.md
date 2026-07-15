@@ -31,8 +31,9 @@ Guest Definition Variables
 | Variable        | Purpose   |
 | --------------- | --------- |
 | HOST            | Guest hostname |
-| POOL            | libvirt pool to store VM disk |
+| POOL            | libvirt pool to store VM disk default: filesystems |
 | IMAGE           | Image file stored in {FOG-HOME}/images |
+| MACHINE         | Emulated machine (use 'qemu-kvm -machine help' to find value to use; default q35)
 | OS              | osinfo (use 'osinfo-query os' to find a value to use) |
 | CPUS            | Number of vcpu to allocate |
 | MEMORY          | Memory allocated (in MiB) |

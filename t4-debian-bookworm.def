@@ -1,20 +1,20 @@
 # vim: set filetype=bash :
 
-export HOST="tt"
+export HOST="t4"
 export POOL="filesystems"
-export IMAGE="questing-server.qcow2"
-export OS="generic"
+export IMAGE="debian-12-generic-amd64-20260712-2537.qcow2"
+export OS="debian12"
 export CPUS="2"
 export MEMORY="4096"
 export BOOT="uefi"
 
 export ROOT_DEVICE="/dev/sda1"
-export ROOT_SIZE="20G"
+export ROOT_SIZE="10G"
 
 export NETWORK="network=bridge"
 export NETWORK_DEVICE="enp1s0"
-export IP_ADDRESS="192.168.1.24"
-export GATEWAY_ADDRESS="192.168.1.254"
+export IP_ADDRESS="192.168.10.34"
+export GATEWAY_ADDRESS="192.168.10.1"
 export DNS_SERVER="1.1.1.1"
 
 export SSH_PUBLIC_KEY="$(cat ${HOME}/.ssh/id_rsa.pub)"
